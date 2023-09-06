@@ -21,6 +21,7 @@ declare module 'styled-components' {
       medium: string
       base: string
       large: string
+      largest: string
       containerWidth: string
     }
 

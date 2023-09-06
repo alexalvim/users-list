@@ -18,7 +18,8 @@ export const light = {
     medium: '0.75em',
     base: '1rem',
     large: '1.5rem',
-    containerWidth: '36.25rem',
+    largest: '4rem',
+    containerWidth: '26rem',
   },
 
   typo: {

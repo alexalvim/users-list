@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './reset.css'
 import reportWebVitals from './reportWebVitals'
-import { ListUsers } from './pages/ListUsers'
+import { UsersList } from './pages/UsersList'
 import { EditUser } from './pages/EditUser'
 import { RegisterUser } from './pages/RegisterUser'
 import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom'
@@ -11,11 +11,11 @@ import { light } from './styles/theme/light'
 
 const router = createBrowserRouter([
   {
-    path: '/list',
-    element: <ListUsers />,
+    path: '/users',
+    element: <UsersList />,
   },
   {
-    path: 'users/:userId/edit',
+    path: 'users/:cpf/edit',
     element: <EditUser />,
   },
   {
@@ -24,7 +24,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/',
-    element: <Navigate to="/list" replace />,
+    element: <Navigate to="/users" replace />,
   },
 ])
 

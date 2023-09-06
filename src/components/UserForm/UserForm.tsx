@@ -1,9 +1,13 @@
 import { z } from 'zod'
 import { Field } from '../Field'
-import { ButtonWrapper, FieldsWrapper } from './styles'
+import { ButtonWrapper, FieldsWrapper, PageLink } from './styles'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../Button'
+import { getUsers, setUsers } from '../../services/user'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { IUser } from '../../types'
 
 const createBarbecueFormSchema = z.object({
   name: z
@@ -30,17 +34,39 @@ const createBarbecueFormSchema = z.object({
     ),
 })
 export const UserForm = () => {
+  const [usersList, setUsersList] = useState<IUser[]>([])
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createBarbecueFormSchema),
   })
+
+  useEffect(() => {
+    const populateUsersList = async () => {
+      const newUsers = await getUsers()
+      setUsersList(newUsers)
+    }
+
+    populateUsersList()
+  }, [])
+
   const onSubmit = (data: Record<string, string>) => {
-    console.log({ data })
+    setUsers([
+      ...usersList,
+      {
+        name: data.name,
+        cpf: data.cpf,
+        email: data.email,
+        phone: data.phone,
+      },
+    ])
+
+    navigate('/users')
   }
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FieldsWrapper>
@@ -65,6 +91,7 @@ export const UserForm = () => {
           errorMessage={errors?.phone?.message?.toString() || null}
         />
       </FieldsWrapper>
+      <PageLink to={'/users'}>Retornar para listagem</PageLink>
       <ButtonWrapper>
         <Button
           onClick={handleSubmit(onSubmit)}

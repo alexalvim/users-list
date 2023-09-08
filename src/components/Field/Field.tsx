@@ -6,10 +6,16 @@ interface IFieldProps {
   label: string
   errorMessage: string | null
   formProps: UseFormRegisterReturn<string>
+  value: string
 }
 
-export const Field = ({ label, errorMessage, formProps }: IFieldProps) => {
-  const [isFocused, setIsFocused] = useState(false)
+export const Field = ({
+  label,
+  errorMessage,
+  formProps,
+  value,
+}: IFieldProps) => {
+  const [isFocused, setIsFocused] = useState(!!value)
 
   return (
     <ContentWrapper>

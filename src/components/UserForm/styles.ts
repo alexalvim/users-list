@@ -10,9 +10,10 @@ export const FieldsWrapper = styled.div`
   }
 `
 
-export const ButtonWrapper = styled.div`
+export const ButtonsWrapper = styled.div`
   > button {
     width: 100%;
+    margin-bottom: ${({ theme }) => theme.spaces.large};
   }
 `
 
@@ -22,4 +23,15 @@ export const PageLink = styled(Link)`
   font-weight: bold;
   font-size: ${({ theme }) => theme.typo.medium};
   margin-bottom: ${({ theme }) => theme.spaces.large};
+`
+
+export const ErrorMessage = styled.span`
+  color: ${({ theme }) => theme.colors.dangerRed};
+  border: solid 1px ${({ theme }) => theme.colors.dangerRed};
+  background-color: ${({ theme }) => theme.colors.dangerRed}15;
+  display: block;
+  font-weight: bold;
+  font-size: ${({ theme }) => theme.typo.small};
+  margin: ${({ theme }) => theme.spaces.large} 0;
+  padding: ${({ theme }) => theme.spaces.medium};
 `

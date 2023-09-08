@@ -5,6 +5,7 @@ interface IButtonProps {
   label: string
   disabled: boolean
   isLoading: boolean
+  isDanger?: boolean
 }
 
 export const Button = ({
@@ -12,9 +13,10 @@ export const Button = ({
   label,
   disabled,
   isLoading,
+  isDanger,
 }: IButtonProps) => {
   return (
-    <StyledButton disabled={disabled} onClick={onClick}>
+    <StyledButton $isdanger={!!isDanger} disabled={disabled} onClick={onClick}>
       {' '}
       {isLoading ? (
         <LoaderWrapper>

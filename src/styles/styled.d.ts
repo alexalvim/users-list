@@ -11,6 +11,7 @@ declare module 'styled-components' {
       dangerRed: string
       darkGray: string
       lightGray: string
+      lightestGray: string
       mediumGray: string
       defaultBoxShadow: string
     }

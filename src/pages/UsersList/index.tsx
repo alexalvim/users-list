@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Field } from '../../components/Field'
 import {
   ButtonWrapper,
   ContentHolder,
   ContentWrapper,
+  InfoMessage,
   List,
   PageTitle,
 } from './styles'
@@ -14,7 +14,7 @@ import { Button } from '../../components/Button'
 import { useNavigate } from 'react-router-dom'
 
 export const UsersList = () => {
-  const [usersList, setUsersList] = useState<IUser[]>([])
+  const [usersList, setUsersList] = useState<IUser[] | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -30,13 +30,20 @@ export const UsersList = () => {
     <ContentWrapper>
       <ContentHolder>
         <PageTitle>Listagem de usuários</PageTitle>
-        <List>
-          {usersList.map((user) => (
-            <li key={user.cpf}>
-              <UserItem user={user} />
-            </li>
-          ))}
-        </List>
+
+        {usersList === null ? (
+          <InfoMessage>Carregando usuários</InfoMessage>
+        ) : usersList.length > 0 ? (
+          <List>
+            {usersList.map((user) => (
+              <li key={user.cpf}>
+                <UserItem user={user} />
+              </li>
+            ))}
+          </List>
+        ) : (
+          <InfoMessage>Sem usuários cadastrados</InfoMessage>
+        )}
         <ButtonWrapper>
           <Button
             onClick={() => navigate('/users/new')}

@@ -1,6 +1,9 @@
 import styled from 'styled-components'
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<{
+  $isdanger: boolean
+  disabled: boolean
+}>`
   color: ${({ theme }) => theme.colors.lightestColor};
   background-color: ${({ theme }) => theme.colors.mainColor};
   font-weight: bold;
@@ -9,10 +12,31 @@ export const StyledButton = styled.button`
   padding: ${({ theme }) => `${theme.spaces.medium} ${theme.spaces.large}`};
   border-radius: 1.25rem;
   cursor: pointer;
+  transition: all 0.125s ease-out;
 
   &:hover {
     opacity: 0.7;
   }
+
+  ${({ $isdanger, theme }) =>
+    $isdanger
+      ? `
+    background-color: ${theme.colors.dangerRed};
+  `
+      : ''}
+
+  ${({ disabled, theme }) =>
+    disabled
+      ? `
+    background-color: ${theme.colors.lightestGray};
+    color: ${theme.colors.mediumGray};
+    cursor: default;
+
+    &:hover {
+      opacity: 1;
+    }
+  `
+      : ''}
 `
 
 export const LoaderWrapper = styled.span`

@@ -1,12 +1,9 @@
 import { z } from 'zod'
 import { Field } from '../Field'
-import { ButtonWrapper, FieldsWrapper, PageLink } from './styles'
+import { ButtonsWrapper, ErrorMessage, FieldsWrapper, PageLink } from './styles'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '../Button'
-import { getUsers, setUsers } from '../../services/user'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { IUser } from '../../types'
 
 const createBarbecueFormSchema = z.object({
@@ -29,43 +26,38 @@ const createBarbecueFormSchema = z.object({
     .string()
     .nonempty('Telefone do usuário é obrigatório')
     .refine(
-      (phone) => /^\d{11}$/.test(phone),
+      (phone) => /^\d{10,11}$/.test(phone),
       'Valor não é um telefone, favor utilizar apenas números com DDD',
     ),
 })
-export const UserForm = () => {
-  const [usersList, setUsersList] = useState<IUser[]>([])
-  const navigate = useNavigate()
+
+interface IUserFormProps {
+  defaultUser?: IUser | null
+  onSubmit: (data: Record<string, string>) => void
+  onRemove?: () => void
+  errorMessage: string | null
+}
+
+export const UserForm = ({
+  defaultUser,
+  onSubmit,
+  onRemove,
+  errorMessage,
+}: IUserFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
+    getValues,
   } = useForm({
     resolver: zodResolver(createBarbecueFormSchema),
+    defaultValues: {
+      name: defaultUser?.name || '',
+      email: defaultUser?.email || '',
+      cpf: defaultUser?.cpf || '',
+      phone: defaultUser?.phone || '',
+    },
   })
-
-  useEffect(() => {
-    const populateUsersList = async () => {
-      const newUsers = await getUsers()
-      setUsersList(newUsers)
-    }
-
-    populateUsersList()
-  }, [])
-
-  const onSubmit = (data: Record<string, string>) => {
-    setUsers([
-      ...usersList,
-      {
-        name: data.name,
-        cpf: data.cpf,
-        email: data.email,
-        phone: data.phone,
-      },
-    ])
-
-    navigate('/users')
-  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,32 +66,46 @@ export const UserForm = () => {
           formProps={{ ...register('name') }}
           label={'Nome completo(sem abreviações)'}
           errorMessage={errors?.name?.message?.toString() || null}
+          value={getValues('name')}
         />
         <Field
           formProps={{ ...register('email') }}
           label={'E-mail'}
           errorMessage={errors?.email?.message?.toString() || null}
+          value={getValues('email')}
         />
         <Field
           formProps={{ ...register('cpf') }}
           label={'CPF'}
           errorMessage={errors?.cpf?.message?.toString() || null}
+          value={getValues('cpf')}
         />
         <Field
           formProps={{ ...register('phone') }}
           label={'Telefone'}
           errorMessage={errors?.phone?.message?.toString() || null}
+          value={getValues('phone')}
         />
       </FieldsWrapper>
+      {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
       <PageLink to={'/users'}>Retornar para listagem</PageLink>
-      <ButtonWrapper>
+      <ButtonsWrapper>
         <Button
           onClick={handleSubmit(onSubmit)}
           label={'Confirmar'}
-          disabled={false}
+          disabled={!isValid}
           isLoading={false}
         />
-      </ButtonWrapper>
+        {defaultUser && onRemove ? (
+          <Button
+            onClick={onRemove}
+            label={'Remover'}
+            disabled={false}
+            isLoading={false}
+            isDanger={true}
+          />
+        ) : null}
+      </ButtonsWrapper>
     </form>
   )
 }

@@ -60,7 +60,7 @@ export const UserForm = ({
   })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form data-testid={'userform-form'} onSubmit={handleSubmit(onSubmit)}>
       <FieldsWrapper>
         <Field
           formProps={{ ...register('name') }}

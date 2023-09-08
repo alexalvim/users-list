@@ -3,6 +3,7 @@ import { light } from '../../styles/theme/light'
 import { ThemeProvider } from 'styled-components'
 import { UsersList } from '.'
 import { act } from 'react-dom/test-utils'
+import { formatCPF, formatPhone } from '../../utils/formatters'
 
 jest.mock('react-router-dom', () => ({
   useNavigate: jest.fn(),
@@ -12,10 +13,10 @@ jest.mock('react-router-dom', () => ({
 jest.mock('../../services/user', () => ({
   getUsers: () => [
     {
-      cpf: '123',
+      cpf: '12322222222',
       name: 'Name',
       email: 'email@test.com',
-      phone: '123456',
+      phone: '1234567890',
     },
   ],
 }))
@@ -33,9 +34,9 @@ describe('UsersList', () => {
     await waitFor(() => {
       const pageTitle = screen.getByText('Listagem de usuários')
       const userName = screen.getByText('Name')
-      const cpf = screen.getByText('123')
+      const cpf = screen.getByText(formatCPF('12322222222'))
       const email = screen.getByText('email@test.com')
-      const phone = screen.getByText('123456')
+      const phone = screen.getByText(formatPhone('1234567890'))
 
       expect(pageTitle).toBeInTheDocument()
       expect(userName).toBeInTheDocument()

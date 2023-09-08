@@ -1,4 +1,5 @@
 import { IUser } from '../../types'
+import { formatCPF, formatPhone } from '../../utils/formatters'
 import { ContentWrapper, EditLink, TextLine } from './styles'
 
 interface IUserItemProps {
@@ -19,11 +20,11 @@ export const UserItem = ({ user }: IUserItemProps) => {
         </TextLine>
         <TextLine>
           <b>Telefone: </b>
-          {user.phone}
+          {formatPhone(user.phone)}
         </TextLine>
         <TextLine>
           <b>CPF:</b>
-          {user.cpf}
+          {formatCPF(user.cpf)}
         </TextLine>
       </div>
       <div>

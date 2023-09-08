@@ -66,25 +66,25 @@ export const UserForm = ({
           formProps={{ ...register('name') }}
           label={'Nome completo(sem abreviações)'}
           errorMessage={errors?.name?.message?.toString() || null}
-          value={getValues('name')}
+          hasValue={!!getValues('name')}
         />
         <Field
           formProps={{ ...register('email') }}
           label={'E-mail'}
           errorMessage={errors?.email?.message?.toString() || null}
-          value={getValues('email')}
+          hasValue={!!getValues('email')}
         />
         <Field
           formProps={{ ...register('cpf') }}
           label={'CPF'}
           errorMessage={errors?.cpf?.message?.toString() || null}
-          value={getValues('cpf')}
+          hasValue={!!getValues('cpf')}
         />
         <Field
           formProps={{ ...register('phone') }}
           label={'Telefone'}
           errorMessage={errors?.phone?.message?.toString() || null}
-          value={getValues('phone')}
+          hasValue={!!getValues('phone')}
         />
       </FieldsWrapper>
       {errorMessage ? <ErrorMessage>{errorMessage}</ErrorMessage> : null}
